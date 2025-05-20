@@ -48,4 +48,3 @@ window.addEventListener("DOMContentLoaded", () => {
     carregarPagina(location.hash); //carrega a página inicial
 });
 window.addEventListener("hashchange", () => carregarPagina(location.hash)); //quando houver uma mudança no hash da página roda a função
-//window.addEventListener("DOMContentLoaded", () => carregarPagina(location.hash));
