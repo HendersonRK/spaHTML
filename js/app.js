@@ -3,17 +3,42 @@ const rotas = {
     sobre: { titulo: "Sobre Nós", arquivo: "sobre.html" }
 };
 
-function carregarComponentes(id, caminho) 
+function carregarComponentes(file, path) 
 {
-    fetch(caminho)
-        .then(resp => resp.text())
-        .then(html => {
-            document.getElementById(id).innerHTML = html;
+    fetch(path)
+        .then(res => res.text())
+        .then(htmlComponent => {
+            document.getElementById(file).innerHTML = htmlComponent; //substitui o conteudo do elemento pelo HTML do componente
         })
         .catch(() => {
-            document.getElementById(id).innerHTML = "<p>Erro ao carregar componente</p>";
+            document.getElementById(file).innerHTML = `<p style="color: red;">Erro ao carregar componente</p>`;
         });
 
+}
+
+function carregarComponentesInternos(container) 
+{
+    const componentes = container.querySelectorAll("[data-componente]"); //busca todos os elementos que possuem o atributo data-componente
+    componentes.forEach(div => {
+        const nome = div.dataset.componente;//pega o nome do componente
+        const config = { ...div.dataset };
+        delete config.componente;
+
+        fetch(`componentes/${nome}.html`)//requisição HTTP para o arquivo HTML do componente pegando a constante como nome do componente
+            .then(res => res.text())//pega o conteúdo do arquivo do componente em forma te texto
+            .then(html => {
+                Object.keys(config).forEach(chave => {
+                    const valor = config[chave];
+                    const marcador = new RegExp(`{{\\s*${chave}\\s*}}`, "g");
+                    html = html.replace(marcador, valor);
+                })
+
+                div.outerHTML = html; //substitui o elemento atual pelo HTML do componente
+            })
+            .catch(() => {
+                div.outerHTML = `<p style="color: red;">Erro ao carregar componente Interno</p>`;
+            });
+    });
 }
 
 function carregarPagina(hash) 
@@ -27,14 +52,13 @@ function carregarPagina(hash)
         return;
     }
 
-    fetch(rotas[rota].arquivo)
-        .then(response => {
-            if (!response.ok) throw new Error("Página não encontrada");
-            return response.text();
-        })
+    fetch(rotas[rota].arquivo) //requisição HTTP para o arquivo HTML
+        .then(res => res.text()) //espera a requisicao e pega o conteúdo em forma de texto de res
         .then(html => {
-            document.getElementById("conteudo").innerHTML = html;
-            document.title = rotas[rota].titulo;
+            const conteudo = document.getElementById("conteudo");//busca no documento o elemento com id=conteudo
+            conteudo.innerHTML = html; //substitui o conteúdo do elemento atual pelo HTML lido no fetch
+            document.title = rotas[rota].titulo; //atualiza o título da página para o titulo do objeto.
+            carregarComponentesInternos(conteudo); //carrega os componentes internos da página
         })
         .catch(() => {
             document.getElementById("conteudo").innerHTML = "<h2>ERRO 404</h2><p>Conteúdo não encontrado!</p>";
