@@ -1,5 +1,5 @@
-PT-BR
-Simples Web Componentes
+PT-BR ->
+ Simples Web Componentes
 Um pequeno projeto construído com HTML, CSS e JavaScript puro. Esse projeto demonstra um fron-end basico, com estrutura de componentes e navegação sem o uso de frameworks
 
 ✨ Caracteristicas
@@ -22,8 +22,8 @@ https://github.com/HendersonRK/spaHTML
 
 e então abra o arquivo index.html no seu navegador
 
-EN
-Simple Web Components
+EN ->
+ Simple Web Components
 
 A small project built with pure HTML, CSS and JavaScript. This project demonstrates basic front-end component structure and navigation logic without using any frameworks.
 ✨ Features
