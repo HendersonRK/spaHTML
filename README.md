@@ -29,6 +29,7 @@ EN ->
 Simple WEB Components
 
 A small project built with pure HTML, CSS and JavaScript. This project demonstrates basic front-end component structure and navigation logic without using any frameworks.
+
 ✨ Features
 
     Custom button, header, and footer components
